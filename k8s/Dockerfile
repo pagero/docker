@@ -13,9 +13,12 @@ RUN mkdir /helm
 RUN curl -sL https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz \
   | tar -xzvf - -C /helm
 
-# Helm plugins require git
-# helm-diff requires bash, curl
-RUN apk --update add git bash
+RUN apk --update add \
+  # Helm plugins require git
+  # helm-diff requires bash, curl
+  git bash \
+  # Makefiles are commonly used as configuration
+  make
 
 # Install Helm plugins
 RUN helm init --client-only
