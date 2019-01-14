@@ -1,8 +1,10 @@
+FROM hashicorp/terraform:0.11.11 as hashicorp
+
 FROM google/cloud-sdk:228.0.0-alpine
 ARG KUBERNETES_VERSION=v1.13.0
 ARG HELM_VERSION=v2.12.0
 
-ENV PATH=/kubernetes/client/bin:/helm/linux-amd64:$PATH
+ENV PATH=/kubernetes/client/bin:/helm/linux-amd64:/terraform:$PATH
 RUN curl -sL https://dl.k8s.io/${KUBERNETES_VERSION}/kubernetes-client-linux-amd64.tar.gz \
   | tar -xzvf -
 # Symlink common path set by host machines gcloud kube config
@@ -24,3 +26,7 @@ RUN apk --update add \
 RUN helm init --client-only
 RUN helm plugin install https://github.com/viglesiasce/helm-gcs.git
 RUN helm plugin install https://github.com/databus23/helm-diff
+
+# Install Terraform
+RUN mkdir /terraform
+COPY --from=hashicorp /bin/terraform /terraform/terraform
