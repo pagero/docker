@@ -2,7 +2,7 @@ FROM hashicorp/terraform:0.11.11 as hashicorp
 
 FROM google/cloud-sdk:228.0.0-alpine
 ARG KUBERNETES_VERSION=v1.13.0
-ARG HELM_VERSION=v2.12.0
+ARG HELM_VERSION=v2.13.1
 
 ENV PATH=/kubernetes/client/bin:/helm/linux-amd64:/terraform:$PATH
 RUN curl -sL https://dl.k8s.io/${KUBERNETES_VERSION}/kubernetes-client-linux-amd64.tar.gz \
