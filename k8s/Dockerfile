@@ -1,4 +1,4 @@
-FROM hashicorp/terraform:0.11.11 as hashicorp
+FROM hashicorp/terraform:0.12.1 as hashicorp
 
 FROM google/cloud-sdk:228.0.0-alpine
 ARG KUBERNETES_VERSION=v1.13.0
