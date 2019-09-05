@@ -3,6 +3,7 @@ FROM hashicorp/terraform:0.12.6 as hashicorp
 FROM google/cloud-sdk:258.0.0-alpine
 ARG KUBERNETES_VERSION=v1.13.9
 ARG HELM_VERSION=v2.14.3
+ARG SOPS_VERSION=3.3.1
 
 ENV PATH=/kubernetes/client/bin:/helm/linux-amd64:/terraform:$PATH
 RUN curl -sL https://dl.k8s.io/${KUBERNETES_VERSION}/kubernetes-client-linux-amd64.tar.gz \
@@ -21,6 +22,10 @@ RUN apk --update add \
   git bash \
   # Makefiles are commonly used as configuration
   make
+
+# Install github.com/mozilla/sops
+RUN curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux
+RUN chmod +x /usr/local/bin/sops
 
 # Install Helm plugins
 RUN helm init --client-only
