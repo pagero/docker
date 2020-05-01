@@ -28,9 +28,12 @@ RUN curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/down
 RUN chmod +x /usr/local/bin/sops
 
 # Install Helm plugins
+ENV HELM_HOME=/root/.helm
 RUN helm init --client-only
 RUN helm plugin install https://github.com/viglesiasce/helm-gcs.git
 RUN helm plugin install https://github.com/databus23/helm-diff
+# Give anyone permission to the $HELM_HOME, so we can run image as any user:
+RUN chmod 777 -fR /root /root/.helm
 
 # Install Terraform
 RUN mkdir /terraform
